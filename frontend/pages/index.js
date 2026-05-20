@@ -11,13 +11,13 @@ export default function Home() {
   const [barberId, setBarberId] = useState("1");
 
   const loadAppointments = async () => {
-    const res = await fetch("http://localhost:8080/appointments");
+    const res = await fetch("https://barbershop-full-gah5.onrender.com/appointments");
     const data = await res.json();
     setAppointments(data);
   };
 
   const createAppointment = async (hora) => {
-    await fetch("http://localhost:8080/appointments", {
+    await fetch("https://barbershop-full-gah5.onrender.com/appointments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ barberId, time: hora })
@@ -27,7 +27,7 @@ export default function Home() {
   };
 
   const cancelAppointment = async (id) => {
-    await fetch(`http://localhost:8080/appointments/${id}`, {
+    await fetch(`https://barbershop-full-gah5.onrender.com/appointments/${id}`, {
       method: "DELETE"
     });
 
