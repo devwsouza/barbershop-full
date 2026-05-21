@@ -1,4 +1,3 @@
-
 package com.barbershop.appointment;
 
 import org.springframework.web.bind.annotation.*;
@@ -9,22 +8,26 @@ import java.util.*;
 @CrossOrigin
 public class AppointmentController {
 
-    private List<Map<String, Object>> db = new ArrayList<>();
+    private final AppointmentRepository repository;
+
+    public AppointmentController(AppointmentRepository repository) {
+        this.repository = repository;
+    }
 
     @PostMapping
-    public Map<String, Object> create(@RequestBody Map<String, Object> data) {
-        data.put("id", UUID.randomUUID().toString());
-        db.add(data);
-        return data;
+    public Appointment create(@RequestBody Appointment appointment) {
+        return repository.save(appointment);
     }
 
     @GetMapping
-    public List<Map<String, Object>> list() {
-        return db;
+    public List<Appointment> list() {
+        return repository.findAll();
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        db.removeIf(a -> a.get("id").equals(id));
+    public void delete(@PathVariable UUID id) {
+        repository.deleteById(id);
     }
 }
+
+
