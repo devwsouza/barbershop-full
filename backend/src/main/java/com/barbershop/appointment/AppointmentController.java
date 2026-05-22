@@ -5,7 +5,9 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/appointments")
-@CrossOrigin
+@CrossOrigin(origins = {
+    "https://barbershop-app-lake.vercel.app"
+})
 public class AppointmentController {
 
     private final AppointmentRepository repository;
@@ -29,5 +31,3 @@ public class AppointmentController {
         repository.deleteById(id);
     }
 }
-
-
