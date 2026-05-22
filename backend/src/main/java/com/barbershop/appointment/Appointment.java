@@ -1,8 +1,7 @@
 package com.barbershop.appointment;
-import jakarta.persistence.*;
-import java.time.*;
-import java.util.*;
 
+import jakarta.persistence.*;
+import java.util.*;
 
 @Entity
 public class Appointment {
@@ -13,6 +12,11 @@ public class Appointment {
 
     private String barberId;
     private String time;
+
+    // ✅ ESSENCIAL PARA SAAS
+    private String tenantId;
+
+    // ✅ GETTERS E SETTERS
 
     public UUID getId() {
         return id;
@@ -33,5 +37,14 @@ public class Appointment {
     public void setTime(String time) {
         this.time = time;
     }
-}
 
+    // ✅ NOVO (IMPORTANTE)
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    // ✅ NOVO (IMPORTANTE)
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+}

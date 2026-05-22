@@ -12,18 +12,27 @@ public class AppointmentController {
 
     private final AppointmentRepository repository;
 
+    // ✅ TEMPORÁRIO (depois vem do login)
+    private final String tenantId = "barbearia2";
+
     public AppointmentController(AppointmentRepository repository) {
         this.repository = repository;
     }
 
     @PostMapping
     public Appointment create(@RequestBody Appointment appointment) {
+
+        // ✅ FORÇA O TENANT
+        appointment.setTenantId(tenantId);
+
         return repository.save(appointment);
     }
 
     @GetMapping
     public List<Appointment> list() {
-        return repository.findAll();
+
+        // ✅ BUSCA SÓ DO TENANT
+        return repository.findByTenantId(tenantId);
     }
 
     @DeleteMapping("/{id}")
