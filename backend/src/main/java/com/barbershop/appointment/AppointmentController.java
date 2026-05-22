@@ -13,7 +13,7 @@ public class AppointmentController {
     private final AppointmentRepository repository;
 
     // ✅ TEMPORÁRIO (depois vem do login)
-    private final String tenantId = "barbearia2";
+    private final String tenantId = "barbearia1";
 
     public AppointmentController(AppointmentRepository repository) {
         this.repository = repository;
