@@ -40,4 +40,3 @@ public class AppointmentController {
         repository.deleteById(id);
     }
 }
-``
