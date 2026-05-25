@@ -12,13 +12,6 @@ public class AppointmentController {
 
     private final AppointmentRepository repository;
 
-    
-    @GetMapping
-    public List<Appointment> list(@RequestHeader("tenantId") String tenantId) {
-        return repository.findByTenantId(tenantId);
-    }
-
-
     public AppointmentController(AppointmentRepository repository) {
         this.repository = repository;
     }
@@ -27,21 +20,24 @@ public class AppointmentController {
     public Appointment create(
         @RequestBody Appointment appointment,
         @RequestHeader("tenantId") String tenantId
+    ) {
         appointment.setTenantId(tenantId);
-    ){
-        appointment.setTenantId(tenantId)
         return repository.save(appointment);
     }
 
     @GetMapping
-    public List<Appointment> list() {
-
-        // ✅ BUSCA SÓ DO TENANT
+    public List<Appointment> list(
+        @RequestHeader("tenantId") String tenantId
+    ) {
         return repository.findByTenantId(tenantId);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
+    public void delete(
+        @PathVariable UUID id,
+        @RequestHeader("tenantId") String tenantId
+    ) {
         repository.deleteById(id);
     }
 }
+``
