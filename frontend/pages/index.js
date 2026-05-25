@@ -10,40 +10,64 @@ export default function Home() {
   const [appointments, setAppointments] = useState([]);
   const [barberId, setBarberId] = useState("1");
 
+  // ✅ carregar agendamentos (sem cache)
   const loadAppointments = async () => {
-    const res = await fetch("https://barbershop-full-gah5.onrender.com/appointments");
-    const data = await res.json();
-    setAppointments(data);
+    try {
+      const res = await fetch(
+        "https://barbershop-full-gah5.onrender.com/appointments",
+        { cache: "no-store" } // 🚀 evita cache do celular/PWA
+      );
+      const data = await res.json();
+      setAppointments(data);
+    } catch (err) {
+      console.error("Erro ao carregar agendamentos:", err);
+    }
   };
 
+  // ✅ criar agendamento
   const createAppointment = async (hora) => {
-    await fetch("https://barbershop-full-gah5.onrender.com/appointments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ barberId, time: hora })
-    });
+    try {
+      await fetch("https://barbershop-full-gah5.onrender.com/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ barberId, time: hora })
+      });
 
-    loadAppointments();
+      loadAppointments(); // 🔥 atualiza após criar
+    } catch (err) {
+      console.error("Erro ao criar agendamento:", err);
+    }
   };
 
+  // ✅ cancelar agendamento
   const cancelAppointment = async (id) => {
-    await fetch(`https://barbershop-full-gah5.onrender.com/appointments/${id}`, {
-      method: "DELETE"
-    });
+    try {
+      await fetch(
+        `https://barbershop-full-gah5.onrender.com/appointments/${id}`,
+        { method: "DELETE" }
+      );
 
-    loadAppointments();
+      loadAppointments(); // 🔥 atualiza após cancelar
+    } catch (err) {
+      console.error("Erro ao cancelar:", err);
+    }
   };
 
+  // ✅ inicial + auto atualização
   useEffect(() => {
     loadAppointments();
 
-    // ✅ CORREÇÃO DO ERRO (executa só no browser)
-    if (typeof window !== "undefined") {
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/sw.js");
-      }
+    // 🔥 atualização automática (sincroniza todos dispositivos)
+    const interval = setInterval(() => {
+      loadAppointments();
+    }, 5000); // a cada 5 segundos
+
+    // ✅ service worker (PWA)
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      //navigator.serviceWorker.register("/sw.js");
     }
 
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -83,7 +107,6 @@ export default function Home() {
                   background: agendamento ? "#ecfdf5" : "white"
                 }}
               >
-
                 <div style={styles.time}>{hora}</div>
 
                 {agendamento ? (
