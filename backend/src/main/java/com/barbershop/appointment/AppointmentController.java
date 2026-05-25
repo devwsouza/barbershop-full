@@ -12,19 +12,24 @@ public class AppointmentController {
 
     private final AppointmentRepository repository;
 
-    // ✅ TEMPORÁRIO (depois vem do login)
-    private final String tenantId = "barbearia2";
+    
+    @GetMapping
+    public List<Appointment> list(@RequestHeader("tenantId") String tenantId) {
+        return repository.findByTenantId(tenantId);
+    }
+
 
     public AppointmentController(AppointmentRepository repository) {
         this.repository = repository;
     }
 
     @PostMapping
-    public Appointment create(@RequestBody Appointment appointment) {
-
-        // ✅ FORÇA O TENANT
+    public Appointment create(
+        @RequestBody Appointment appointment,
+        @RequestHeader("tenantId") String tenantId
         appointment.setTenantId(tenantId);
-
+    ){
+        appointment.setTenantId(tenantId)
         return repository.save(appointment);
     }
 
