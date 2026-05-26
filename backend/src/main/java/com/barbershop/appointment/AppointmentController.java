@@ -19,24 +19,30 @@ public class AppointmentController {
     @PostMapping
     public Appointment create(
         @RequestBody Appointment appointment,
-        @RequestHeader("tenantId") String tenantId
+        @RequestHeader(value = "tenantId", required = false) String tenantId
     ) {
+        if (tenantId == null) return null;
+
         appointment.setTenantId(tenantId);
         return repository.save(appointment);
     }
 
     @GetMapping
     public List<Appointment> list(
-        @RequestHeader("tenantId") String tenantId
+        @RequestHeader(value = "tenantId", required = false) String tenantId
     ) {
+        if (tenantId == null) return new ArrayList<>();
+
         return repository.findByTenantId(tenantId);
     }
 
     @DeleteMapping("/{id}")
     public void delete(
         @PathVariable UUID id,
-        @RequestHeader("tenantId") String tenantId
+        @RequestHeader(value = "tenantId", required = false) String tenantId
     ) {
+        if (tenantId == null) return;
+
         repository.deleteById(id);
     }
 }

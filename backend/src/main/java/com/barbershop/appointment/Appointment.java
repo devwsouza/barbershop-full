@@ -13,10 +13,9 @@ public class Appointment {
     private String barberId;
     private String time;
 
-    // ✅ ESSENCIAL PARA SAAS
+    // ✅ CORREÇÃO CRÍTICA (mapeia com banco)
+    @Column(name = "tenant_id")
     private String tenantId;
-
-    // ✅ GETTERS E SETTERS
 
     public UUID getId() {
         return id;
@@ -38,12 +37,10 @@ public class Appointment {
         this.time = time;
     }
 
-    // ✅ NOVO (IMPORTANTE)
     public String getTenantId() {
         return tenantId;
     }
 
-    // ✅ NOVO (IMPORTANTE)
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
