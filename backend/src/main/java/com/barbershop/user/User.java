@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "users") // ✅ IMPORTANTE
 public class User {
 
     @Id
@@ -13,10 +14,8 @@ public class User {
     private String email;
     private String password;
 
-    // 🔥 ESSENCIAL PARA SAAS
+    @Column(name = "tenant_id") // ✅ MAPEAMENTO CORRETO
     private String tenantId;
-
-    // getters e setters
 
     public UUID getId() { return id; }
 

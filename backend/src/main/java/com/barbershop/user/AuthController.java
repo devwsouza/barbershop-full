@@ -17,8 +17,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public User login(@RequestBody User request) {
+
+        // 🔍 buscar usuário no banco
         return userRepository
                 .findByEmailAndPassword(request.getEmail(), request.getPassword())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElse(null); // ✅ NÃO lança erro (evita 500)
     }
 }
