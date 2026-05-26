@@ -5,6 +5,5 @@ import java.util.*;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
 
-    // ✅ FILTRA POR TENANT (ESSENCIAL PRA SAAS)
     List<Appointment> findByTenantId(String tenantId);
 }

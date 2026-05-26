@@ -17,10 +17,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public User login(@RequestBody User request) {
-
-        // 🔍 buscar usuário no banco
         return userRepository
                 .findByEmailAndPassword(request.getEmail(), request.getPassword())
-                .orElse(null); // ✅ NÃO lança erro (evita 500)
+                .orElse(null); // ✅ evita erro 500
     }
 }

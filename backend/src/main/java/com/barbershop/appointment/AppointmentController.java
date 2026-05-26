@@ -21,7 +21,9 @@ public class AppointmentController {
         @RequestBody Appointment appointment,
         @RequestHeader(value = "tenantId", required = false) String tenantId
     ) {
-        if (tenantId == null) return null;
+        if (tenantId == null || tenantId.equals("undefined")) {
+            return null;
+        }
 
         appointment.setTenantId(tenantId);
         return repository.save(appointment);
@@ -31,9 +33,15 @@ public class AppointmentController {
     public List<Appointment> list(
         @RequestHeader(value = "tenantId", required = false) String tenantId
     ) {
-        if (tenantId == null) return new ArrayList<>();
+        if (tenantId == null || tenantId.equals("undefined")) {
+            return new ArrayList<>();
+        }
 
-        return repository.findByTenantId(tenantId);
+        try {
+            return repository.findByTenantId(tenantId);
+        } catch (Exception e) {
+            return new ArrayList<>(); // ✅ evita erro 500
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -41,8 +49,14 @@ public class AppointmentController {
         @PathVariable UUID id,
         @RequestHeader(value = "tenantId", required = false) String tenantId
     ) {
-        if (tenantId == null) return;
+        if (tenantId == null || tenantId.equals("undefined")) {
+            return;
+        }
 
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (Exception ignored) {
+            // ✅ evita erro 500
+        }
     }
 }

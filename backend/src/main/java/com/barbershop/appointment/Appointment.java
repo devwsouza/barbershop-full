@@ -13,7 +13,7 @@ public class Appointment {
     private String barberId;
     private String time;
 
-    // ✅ CORREÇÃO CRÍTICA (mapeia com banco)
+    // ✅ mapeamento correto com banco
     @Column(name = "tenant_id")
     private String tenantId;
 
