@@ -13,7 +13,11 @@ public class Appointment {
     private String barberId;
     private String time;
 
-    // ✅ mapeamento correto com banco
+    // ✅ CRM: relacionamento com cliente
+    @Column(name = "client_id")
+    private UUID clientId;
+
+    // ✅ multi-tenant
     @Column(name = "tenant_id")
     private String tenantId;
 
@@ -35,6 +39,14 @@ public class Appointment {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public UUID getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(UUID clientId) {
+        this.clientId = clientId;
     }
 
     public String getTenantId() {
