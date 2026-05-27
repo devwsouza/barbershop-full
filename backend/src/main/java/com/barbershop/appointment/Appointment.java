@@ -13,11 +13,9 @@ public class Appointment {
     private String barberId;
     private String time;
 
-    // ✅ CRM: relacionamento com cliente
     @Column(name = "client_id")
     private UUID clientId;
 
-    // ✅ multi-tenant
     @Column(name = "tenant_id")
     private String tenantId;
 
