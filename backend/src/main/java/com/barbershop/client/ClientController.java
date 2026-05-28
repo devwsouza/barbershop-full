@@ -35,4 +35,11 @@ public class ClientController {
 
         return repository.findByTenantId(tenantId);
     }
+
+    
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id) {
+        repository.deleteById(id);
+    }
+
 }
