@@ -16,6 +16,7 @@ public class AppointmentController {
         this.repository = repository;
     }
 
+    // ✅ CREATE SEGURO
     @PostMapping
     public Appointment create(
         @RequestBody Appointment appointment,
@@ -25,10 +26,16 @@ public class AppointmentController {
             return null;
         }
 
+        // ✅ GARANTE QUE NÃO VEM ID DO FRONTEND
+        appointment.setId(null);
+
+        // ✅ GARANTE MULTI-TENANT CORRETO
         appointment.setTenantId(tenantId);
+
         return repository.save(appointment);
     }
 
+    // ✅ LIST SEGURO
     @GetMapping
     public List<Appointment> list(
         @RequestHeader(value = "tenantId", required = false) String tenantId
@@ -42,7 +49,7 @@ public class AppointmentController {
         }
     }
 
-    // ✅ HISTÓRICO SEGURO
+    // ✅ HISTÓRICO (OK)
     @GetMapping("/client/{clientId}")
     public List<Appointment> byClient(
         @PathVariable UUID clientId
@@ -54,6 +61,7 @@ public class AppointmentController {
         }
     }
 
+    // ✅ DELETE COM VALIDAÇÃO DE TENANT (CRÍTICO)
     @DeleteMapping("/{id}")
     public void delete(
         @PathVariable UUID id,
@@ -62,7 +70,17 @@ public class AppointmentController {
         if (tenantId == null) return;
 
         try {
-            repository.deleteById(id);
+            Optional<Appointment> apptOpt = repository.findById(id);
+
+            if (apptOpt.isPresent()) {
+                Appointment appt = apptOpt.get();
+
+                // ✅ SÓ DELETA SE FOR DO MESMO TENANT
+                if (tenantId.equals(appt.getTenantId())) {
+                    repository.deleteById(id);
+                }
+            }
+
         } catch (Exception ignored) {
         }
     }
