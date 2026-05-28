@@ -6,5 +6,7 @@ import java.util.*;
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
 
     List<Appointment> findByTenantId(String tenantId);
+
+    // ✅ histórico por cliente
     List<Appointment> findByClientId(UUID clientId);
 }

@@ -33,14 +33,24 @@ public class AppointmentController {
     public List<Appointment> list(
         @RequestHeader(value = "tenantId", required = false) String tenantId
     ) {
-        if (tenantId == null || tenantId.equals("undefined")) {
-            return new ArrayList<>();
-        }
+        if (tenantId == null) return new ArrayList<>();
 
         try {
             return repository.findByTenantId(tenantId);
         } catch (Exception e) {
-            return new ArrayList<>(); // ✅ evita erro 500
+            return new ArrayList<>();
+        }
+    }
+
+    // ✅ HISTÓRICO SEGURO
+    @GetMapping("/client/{clientId}")
+    public List<Appointment> byClient(
+        @PathVariable UUID clientId
+    ) {
+        try {
+            return repository.findByClientId(clientId);
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
     }
 
@@ -49,20 +59,11 @@ public class AppointmentController {
         @PathVariable UUID id,
         @RequestHeader(value = "tenantId", required = false) String tenantId
     ) {
-        if (tenantId == null || tenantId.equals("undefined")) {
-            return;
-        }
+        if (tenantId == null) return;
 
         try {
             repository.deleteById(id);
         } catch (Exception ignored) {
-            // ✅ evita erro 500
         }
     }
-    
-    @GetMapping("/client/{clientId}")
-    public List<Appointment> byClient(@PathVariable UUID clientId) {
-        return repository.findByClientId(clientId);
-    }
-
 }
