@@ -59,4 +59,10 @@ public class AppointmentController {
             // ✅ evita erro 500
         }
     }
+    
+    @GetMapping("/client/{clientId}")
+    public List<Appointment> byClient(@PathVariable UUID clientId) {
+        return repository.findByClientId(clientId);
+    }
+
 }

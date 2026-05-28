@@ -42,4 +42,17 @@ public class ClientController {
         repository.deleteById(id);
     }
 
+    @PutMapping("/{id}")
+    public Client update(
+        @PathVariable UUID id,
+        @RequestBody Client updated
+    ) {
+        Client client = repository.findById(id).orElse(null);
+        if (client == null) return null;
+
+        client.setName(updated.getName());
+        client.setPhone(updated.getPhone());
+
+        return repository.save(client);
+    }
 }
