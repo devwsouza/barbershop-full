@@ -26,9 +26,6 @@ public class AppointmentController {
             return null;
         }
 
-        // ✅ GARANTE QUE NÃO VEM ID DO FRONTEND
-        appointment.setId(null);
-
         // ✅ GARANTE MULTI-TENANT CORRETO
         appointment.setTenantId(tenantId);
 
